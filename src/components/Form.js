@@ -1,39 +1,54 @@
-import React from "react";
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 
+import { addTodo } from "../redux/todos/action";
+import Todos from './Todos';
 
-const Form = ({ setInputText , setTodos, todos, inputText, setStatus }) => {
-    const inputTextHandler = (e) => {
-        console.log(e.target.value);
-        setInputText(e.target.value);
+const Form = () => {
+
+    const [text, setText] = useState("");
+    const [filter, setFilter] = useState("");
+    const dispatch = useDispatch();
+    // const todos = useSelector(state => state.todos);
+
+    const setTodoText = event => {
+        setText(event.target.value);
     }
-    const submitTodoHandler = (e) => {
-        e.preventDefault();
-        setTodos([
-            ...todos, {text:inputText , completed: false, id: Math.random() * 1000}
-        ]);
-        setInputText("");
+
+    const setTodos = event => {
+        event.preventDefault();
+        if(!text.length) {
+            alert("Field can not be empty");
+            return;
+        }
+        dispatch(addTodo(text));
+        setText("");
     }
 
-    const statusHandler= (e) => {
-        setStatus(e.target.value)
+    const filterHandler = (event) => {
+        setFilter(event.target.value);
     }
 
     return (
-        <form>
-            <input value={inputText} onChange={inputTextHandler} type="text" className="todo-list"/>
-            <button onClick={submitTodoHandler} className="todo-button" type="submit">
-                <i className="fas fa-plus-square"></i>
-            </button>
-            <div className="select">
-                <select onChange={statusHandler} name="todos" className="filter-todo">
-                    <option value="all">All</option>
-                    <option value="completed">Completed</option>
-                    <option value="uncompleted">Uncompleted</option>
-                </select>
-
-            </div>
-        </form>
-    )
+        <>
+            <form>
+                <input value={text} onChange={setTodoText} type="text" className="todo-list" />
+                <button
+                    onClick={setTodos}
+                    className="todo-button">
+                    <i className="fas fa-plus-square"></i>
+                </button>
+                <div className="select">
+                    <select onChange={filterHandler} className="filter-todo">
+                        <option value="">All</option>
+                        <option value="completed">Completed</option>
+                        <option value="uncompleted">Uncompleted</option>
+                    </select>
+                </div>
+            </form>
+            <Todos status={filter} />
+        </>
+    );
 }
 
 export default Form;

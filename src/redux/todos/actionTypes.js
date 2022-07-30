@@ -1,0 +1,13 @@
+const WRITING = "WRITING";
+const ADD_TODO = "ADD_TODO";
+const COMPLETE = "COMPLETE";
+const UNCOMPLETE = "UNCOMPLETE";
+const DELETE_TODO = "DELETE_TODO";
+
+export {
+    WRITING,
+    ADD_TODO,
+    DELETE_TODO,
+    COMPLETE,
+    UNCOMPLETE,
+}
